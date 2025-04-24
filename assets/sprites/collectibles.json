@@ -58,7 +58,7 @@
     }
   },
   "meta": {
-    "image": "collectibles.png",
+    "image": "collectibles.svg",
     "format": "RGBA8888",
     "size": { "w": 128, "h": 64 },
     "scale": "1"

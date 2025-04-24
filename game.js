@@ -9,7 +9,7 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 1000 },
-      debug: false
+      debug: true // Enable physics debug to see collision boxes
     }
   },
   scene: {
@@ -49,6 +49,9 @@ let ground, buildings, cityBackground;
 let jumpSound, collectSound, hitSound, powerupSound;
 let userId = 'player_' + Date.now(); // Temporary user ID until auth is implemented
 let selectedCharacter = 'default'; // Default character
+
+// Debug mode - set to true to enable debug features
+const DEBUG_MODE = true;
 
 // Preload game assets
 function preload() {
@@ -123,16 +126,30 @@ function preload() {
   // Load player sprite atlas
   this.load.atlas('player', 'assets/images/player.svg', 'assets/sprites/player.json');
 
+  // Add fallback player image in case atlas doesn't load
+  this.load.image('player_fallback', 'assets/images/player.svg');
+
   // Load obstacle sprite atlas
   this.load.atlas('obstacles', 'assets/images/obstacles.svg', 'assets/sprites/obstacles.json');
 
+  // Add fallback obstacle image
+  this.load.image('obstacle_fallback', 'assets/images/obstacles.svg');
+
   // Load collectibles sprite atlas
   this.load.atlas('collectibles', 'assets/images/collectibles.svg', 'assets/sprites/collectibles.json');
+
+  // Add fallback collectible image
+  this.load.image('collectible_fallback', 'assets/images/collectibles.svg');
 
   // Load ground and background
   this.load.image('ground', 'assets/images/ground.svg');
   this.load.image('buildings', 'assets/images/buildings.svg');
   this.load.image('background', 'assets/images/background.svg');
+
+  // Log asset loading errors
+  this.load.on('loaderror', function(file) {
+    console.error('Error loading asset:', file.key);
+  });
 
   // Add a small delay to show the loading progress
   this.load.on('complete', function() {
@@ -173,10 +190,59 @@ function create() {
   // Create ground
   ground = this.physics.add.staticImage(240, 620, 'ground');
 
-  // Create player
-  player = this.physics.add.sprite(80, 560, 'player', 'player_idle');
+  // Create player with debug info
+  console.log("Creating player sprite");
+
+  // Try to create player with atlas frame, fall back to alternatives if it fails
+  try {
+    player = this.physics.add.sprite(80, 560, 'player', 'player_idle');
+    console.log("Player sprite created with atlas");
+  } catch (error) {
+    console.error("Error creating player with atlas:", error);
+
+    try {
+      // First fallback: try using the image directly
+      player = this.physics.add.sprite(80, 560, 'player_fallback');
+      console.log("Player sprite created with fallback image");
+    } catch (secondError) {
+      console.error("Error creating player with fallback image:", secondError);
+
+      // Second fallback: use the createFallbackPlayer function if available
+      if (typeof createFallbackPlayer === 'function') {
+        console.log("Creating player with fallback graphics function");
+        player = createFallbackPlayer(this, 80, 560);
+      } else {
+        // Last resort: create a simple rectangle sprite
+        console.log("Creating simple rectangle player as last resort");
+        const graphics = this.add.graphics();
+        graphics.fillStyle(0x3498db, 1);
+        graphics.fillRect(0, 0, 40, 48);
+        graphics.generateTexture('ultra_fallback', 40, 48);
+        graphics.destroy();
+
+        player = this.physics.add.sprite(80, 560, 'ultra_fallback');
+      }
+    }
+  }
+
+  // Set collision box size
   player.setSize(40, 48).setOffset(12, 8);
   player.setCollideWorldBounds(true);
+
+  // Make sure player is visible
+  player.setAlpha(1);
+  player.setTint(0xFFFFFF);
+  player.setDepth(10);
+
+  // Add a colored rectangle as a last resort fallback
+  if (DEBUG_MODE) {
+    const debugGraphics = this.add.graphics();
+    debugGraphics.fillStyle(0x3498db, 1);
+    debugGraphics.fillRect(80 - 20, 560 - 24, 40, 48);
+    debugGraphics.setDepth(9);
+  }
+
+  console.log("Player sprite created:", player);
 
   // Create player animations
   this.anims.create({

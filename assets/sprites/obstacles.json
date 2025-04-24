@@ -30,7 +30,7 @@
     }
   },
   "meta": {
-    "image": "obstacles.png",
+    "image": "obstacles.svg",
     "format": "RGBA8888",
     "size": { "w": 192, "h": 128 },
     "scale": "1"
