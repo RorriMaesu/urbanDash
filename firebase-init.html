@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Dash - Firebase Initialization</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    button:hover {
+      background-color: #3367D6;
+    }
+    #status {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    pre {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Urban Dash - Firebase Initialization</h1>
+  <p>This page will initialize the Firestore collections for your Urban Dash game.</p>
+  <p><strong>Warning:</strong> Only run this once to set up your database. Running it multiple times will create duplicate data.</p>
+  
+  <button id="initButton">Initialize Firestore</button>
+  
+  <div id="status" style="display: none;"></div>
+  
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import { getFirestore, collection, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+    
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJcLn1b6Z-7WnBXIsmk5mTmWBM6ez_bhI",
+      authDomain: "urbandash-84512.firebaseapp.com",
+      projectId: "urbandash-84512",
+      storageBucket: "urbandash-84512.firebasestorage.app",
+      messagingSenderId: "1055863235085",
+      appId: "1:1055863235085:web:fcda6e7fed0e9673ce2b44",
+      measurementId: "G-0H3J03KHRL"
+    };
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    // Get elements
+    const initButton = document.getElementById('initButton');
+    const statusDiv = document.getElementById('status');
+    
+    // Initialize collections
+    async function initializeFirestore() {
+      try {
+        updateStatus("Starting Firestore initialization...", "info");
+        
+        // 1. Create sample scores
+        const scoresCollection = collection(db, "scores");
+        await setDoc(doc(scoresCollection), {
+          name: "Player 1",
+          score: 1000,
+          ts: serverTimestamp()
+        });
+        
+        await setDoc(doc(scoresCollection), {
+          name: "Player 2",
+          score: 800,
+          ts: serverTimestamp()
+        });
+        
+        await setDoc(doc(scoresCollection), {
+          name: "Player 3",
+          score: 600,
+          ts: serverTimestamp()
+        });
+        
+        updateStatus("Sample scores created successfully", "info");
+        
+        // 2. Create sample user
+        const usersCollection = collection(db, "users");
+        await setDoc(doc(usersCollection, "user_example"), {
+          tokens: 0,
+          inventory: ["default_skin"],
+          stats: {
+            highScore: 0,
+            totalDistance: 0,
+            totalOrbs: 0
+          },
+          missions: {
+            current: [],
+            completed: []
+          }
+        });
+        
+        updateStatus("Sample user created successfully", "info");
+        
+        // 3. Create daily missions
+        const missionsCollection = collection(db, "missions");
+        await setDoc(doc(missionsCollection, "daily"), {
+          missions: [
+            {
+              id: "mission1",
+              title: "Run 1000m",
+              description: "Run a total distance of 1000 meters",
+              type: "distance",
+              target: 1000,
+              reward: 50,
+              icon: "run"
+            },
+            {
+              id: "mission2",
+              title: "Collect 20 Orbs",
+              description: "Collect 20 energy orbs in a single run",
+              type: "collect",
+              target: 20,
+              reward: 30,
+              icon: "orb"
+            },
+            {
+              id: "mission3",
+              title: "Hack 3 Terminals",
+              description: "Successfully hack 3 terminals during your run",
+              type: "hack",
+              target: 3,
+              reward: 40,
+              icon: "terminal"
+            }
+          ],
+          lastUpdated: serverTimestamp()
+        });
+        
+        updateStatus("Daily missions created successfully", "info");
+        
+        updateStatus("Firestore initialization completed successfully!", "success");
+      } catch (error) {
+        console.error("Error initializing Firestore:", error);
+        updateStatus(`Error initializing Firestore: ${error.message}`, "error");
+      }
+    }
+    
+    // Update status display
+    function updateStatus(message, type) {
+      const currentContent = statusDiv.innerHTML;
+      statusDiv.innerHTML = currentContent + `<p>${message}</p>`;
+      statusDiv.style.display = "block";
+      
+      if (type === "success") {
+        statusDiv.className = "success";
+      } else if (type === "error") {
+        statusDiv.className = "error";
+      } else {
+        statusDiv.className = "";
+      }
+    }
+    
+    // Add event listener to button
+    initButton.addEventListener('click', async () => {
+      initButton.disabled = true;
+      statusDiv.innerHTML = "";
+      statusDiv.className = "";
+      
+      try {
+        await initializeFirestore();
+      } finally {
+        initButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
