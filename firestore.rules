@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Scores collection - anyone can read, but write requires timestamp validation
+    match /scores/{scoreId} {
+      allow read: if true;
+      allow create: if request.resource.data.ts == request.time;
+    }
+    
+    // Users collection - users can only read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Allow public read for limited user data
+      allow read: if request.path.size() == 2; // Only allow reading the whole document, not specific fields
+    }
+    
+    // Missions collection - anyone can read, only admins can write
+    match /missions/{missionId} {
+      allow read: if true;
+      allow write: if false; // Set to admin-only in a real implementation
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="192" height="128" viewBox="0 0 192 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Obstacle 1 - Trash Can -->
+  <g transform="translate(0, 0)">
+    <rect x="16" y="16" width="32" height="40" rx="2" fill="#7f8c8d" />
+    <rect x="14" y="12" width="36" height="6" rx="2" fill="#95a5a6" />
+    <rect x="18" y="20" width="28" height="32" rx="1" fill="#6c7a7a" />
+    <line x1="24" y1="24" x2="24" y2="48" stroke="#95a5a6" stroke-width="2" />
+    <line x1="32" y1="24" x2="32" y2="48" stroke="#95a5a6" stroke-width="2" />
+    <line x1="40" y1="24" x2="40" y2="48" stroke="#95a5a6" stroke-width="2" />
+  </g>
+  
+  <!-- Obstacle 2 - Fire Hydrant -->
+  <g transform="translate(64, 0)">
+    <rect x="24" y="24" width="16" height="32" rx="2" fill="#e74c3c" />
+    <rect x="20" y="20" width="24" height="6" rx="2" fill="#c0392b" />
+    <rect x="20" y="52" width="24" height="6" rx="2" fill="#c0392b" />
+    <circle cx="32" cy="36" r="4" fill="#f1c40f" />
+    <rect x="16" y="32" width="8" height="4" rx="1" fill="#c0392b" />
+    <rect x="40" y="32" width="8" height="4" rx="1" fill="#c0392b" />
+  </g>
+  
+  <!-- Obstacle 3 - Barrier -->
+  <g transform="translate(128, 0)">
+    <rect x="12" y="32" width="40" height="8" rx="1" fill="#f39c12" />
+    <rect x="12" y="40" width="40" height="8" rx="1" fill="#e67e22" />
+    <rect x="20" y="16" width="4" height="16" fill="#7f8c8d" />
+    <rect x="40" y="16" width="4" height="16" fill="#7f8c8d" />
+    <rect x="20" y="48" width="4" height="16" fill="#7f8c8d" />
+    <rect x="40" y="48" width="4" height="16" fill="#7f8c8d" />
+  </g>
+  
+  <!-- Terminal -->
+  <g transform="translate(0, 64)">
+    <rect x="12" y="12" width="40" height="32" rx="2" fill="#2c3e50" />
+    <rect x="16" y="16" width="32" height="20" rx="1" fill="#27ae60" />
+    <rect x="20" y="20" width="24" height="12" fill="#2ecc71" />
+    <rect x="22" y="22" width="20" height="2" fill="#27ae60" />
+    <rect x="22" y="26" width="16" height="2" fill="#27ae60" />
+    <rect x="22" y="30" width="12" height="2" fill="#27ae60" />
+    <rect x="24" y="48" width="16" height="4" rx="1" fill="#34495e" />
+  </g>
+</svg>

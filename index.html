@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Urban Dash</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <!-- Phaser 3 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics-compat.js"></script>
+</head>
+<body>
+  <div id="game"></div>
+  <div id="ui">
+    <div id="game-ui">
+      <div id="score-display">Score: <span id="current-score">0</span></div>
+      <div id="tokens-display">Tokens: <span id="current-tokens">0</span></div>
+    </div>
+    <div id="game-over" style="display: none;">
+      <h2>Game Over!</h2>
+      <p>Your score: <span id="final-score">0</span></p>
+      <input id="playerName" placeholder="Enter name" maxlength="12" />
+      <button id="saveScoreBtn">Save Score</button>
+      <button id="restartBtn">Play Again</button>
+    </div>
+    <div id="leaderboard-container">
+      <h3>Leaderboard</h3>
+      <ol id="leaderboard"></ol>
+    </div>
+    <div id="shop-container" style="display: none;">
+      <h3>Shop</h3>
+      <div id="shop-items"></div>
+    </div>
+    <div id="missions-container">
+      <h3>Daily Missions</h3>
+      <ul id="missions-list"></ul>
+    </div>
+  </div>
+  <!-- Sound generators -->
+  <script src="assets/sounds/jump.js"></script>
+  <script src="assets/sounds/collect.js"></script>
+  <script src="assets/sounds/hit.js"></script>
+  <script src="assets/sounds/powerup.js"></script>
+
+  <!-- Game scripts -->
+  <script src="firebase.js"></script>
+  <script src="shop.js"></script>
+  <script src="missions.js"></script>
+  <script src="start-screen.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

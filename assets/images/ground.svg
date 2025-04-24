@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="480" height="40" viewBox="0 0 480 40" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="groundGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34495e" />
+      <stop offset="100%" stop-color="#2c3e50" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Ground base -->
+  <rect width="480" height="40" fill="url(#groundGradient)" />
+  
+  <!-- Road markings -->
+  <rect x="20" y="15" width="40" height="5" fill="#f1c40f" opacity="0.8" />
+  <rect x="100" y="15" width="40" height="5" fill="#f1c40f" opacity="0.8" />
+  <rect x="180" y="15" width="40" height="5" fill="#f1c40f" opacity="0.8" />
+  <rect x="260" y="15" width="40" height="5" fill="#f1c40f" opacity="0.8" />
+  <rect x="340" y="15" width="40" height="5" fill="#f1c40f" opacity="0.8" />
+  <rect x="420" y="15" width="40" height="5" fill="#f1c40f" opacity="0.8" />
+  
+  <!-- Manhole covers and details -->
+  <circle cx="70" cy="25" r="5" fill="#7f8c8d" />
+  <circle cx="70" cy="25" r="3" fill="#95a5a6" />
+  <circle cx="220" cy="25" r="5" fill="#7f8c8d" />
+  <circle cx="220" cy="25" r="3" fill="#95a5a6" />
+  <circle cx="380" cy="25" r="5" fill="#7f8c8d" />
+  <circle cx="380" cy="25" r="3" fill="#95a5a6" />
+  
+  <!-- Cracks and details -->
+  <line x1="120" y1="5" x2="130" y2="15" stroke="#7f8c8d" stroke-width="1" />
+  <line x1="130" y1="15" x2="140" y2="5" stroke="#7f8c8d" stroke-width="1" />
+  <line x1="300" y1="5" x2="310" y2="15" stroke="#7f8c8d" stroke-width="1" />
+  <line x1="310" y1="15" x2="320" y2="5" stroke="#7f8c8d" stroke-width="1" />
+  <line x1="440" y1="5" x2="450" y2="15" stroke="#7f8c8d" stroke-width="1" />
+  <line x1="450" y1="15" x2="460" y2="5" stroke="#7f8c8d" stroke-width="1" />
+</svg>

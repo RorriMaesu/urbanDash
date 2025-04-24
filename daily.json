@@ -1,0 +1,32 @@
+{
+  "date": "2023-10-15",
+  "missions": [
+    {
+      "id": "mission1",
+      "title": "Run 1000m",
+      "description": "Run a total distance of 1000 meters",
+      "type": "distance",
+      "target": 1000,
+      "reward": 50,
+      "icon": "run"
+    },
+    {
+      "id": "mission2",
+      "title": "Collect 20 Orbs",
+      "description": "Collect 20 energy orbs in a single run",
+      "type": "collect",
+      "target": 20,
+      "reward": 30,
+      "icon": "orb"
+    },
+    {
+      "id": "mission3",
+      "title": "Hack 3 Terminals",
+      "description": "Successfully hack 3 terminals during your run",
+      "type": "hack",
+      "target": 3,
+      "reward": 40,
+      "icon": "terminal"
+    }
+  ]
+}
