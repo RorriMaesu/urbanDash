@@ -13,7 +13,16 @@
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics-compat.js"></script>
 </head>
 <body>
-  <div id="game"></div>
+  <header>
+    <h1>Urban Dash</h1>
+    <nav>
+      <a href="instructions.html" class="instructions-btn">How to Play</a>
+    </nav>
+  </header>
+  <div id="game-container">
+    <div id="game"></div>
+    <div id="loading-message">Loading game assets...</div>
+  </div>
   <div id="ui">
     <div id="game-ui">
       <div id="score-display">Score: <span id="current-score">0</span></div>

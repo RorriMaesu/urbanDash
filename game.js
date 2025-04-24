@@ -1,6 +1,6 @@
 // Game configuration
 const config = {
-  type: Phaser.CANVAS, // Use Canvas renderer instead of AUTO to avoid WebGL warnings
+  type: Phaser.AUTO, // Try AUTO first, falls back to CANVAS if WebGL not available
   parent: 'game',
   width: 480,
   height: 640,
@@ -24,7 +24,12 @@ const config = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
-  }
+  },
+  // Add banner to console
+  title: 'Urban Dash',
+  version: '1.0',
+  // Disable right-click context menu
+  disableContextMenu: true
 };
 
 // Game variables
@@ -41,6 +46,74 @@ let selectedCharacter = 'default'; // Default character
 
 // Preload game assets
 function preload() {
+  // Show loading progress
+  const progressBar = this.add.graphics();
+  const progressBox = this.add.graphics();
+  progressBox.fillStyle(0x222222, 0.8);
+  progressBox.fillRect(240 - 160, 320 - 25, 320, 50);
+
+  const width = this.cameras.main.width;
+  const height = this.cameras.main.height;
+  const loadingText = this.make.text({
+    x: width / 2,
+    y: height / 2 - 50,
+    text: 'Loading...',
+    style: {
+      font: '20px monospace',
+      fill: '#ffffff'
+    }
+  });
+  loadingText.setOrigin(0.5, 0.5);
+
+  const percentText = this.make.text({
+    x: width / 2,
+    y: height / 2,
+    text: '0%',
+    style: {
+      font: '18px monospace',
+      fill: '#ffffff'
+    }
+  });
+  percentText.setOrigin(0.5, 0.5);
+
+  const assetText = this.make.text({
+    x: width / 2,
+    y: height / 2 + 50,
+    text: '',
+    style: {
+      font: '18px monospace',
+      fill: '#ffffff'
+    }
+  });
+  assetText.setOrigin(0.5, 0.5);
+
+  // Update the progress bar
+  this.load.on('progress', function (value) {
+    percentText.setText(parseInt(value * 100) + '%');
+    progressBar.clear();
+    progressBar.fillStyle(0x3498db, 1);
+    progressBar.fillRect(240 - 160 + 10, 320 - 25 + 10, 300 * value, 30);
+  });
+
+  // Update the file being loaded
+  this.load.on('fileprogress', function (file) {
+    assetText.setText('Loading asset: ' + file.key);
+  });
+
+  // Remove progress bar when complete
+  this.load.on('complete', function () {
+    progressBar.destroy();
+    progressBox.destroy();
+    loadingText.destroy();
+    percentText.destroy();
+    assetText.destroy();
+
+    // Hide the loading message in the HTML
+    if (document.getElementById('loading-message')) {
+      document.getElementById('loading-message').style.display = 'none';
+    }
+  });
+
   // Load player sprite atlas
   this.load.atlas('player', 'assets/images/player.svg', 'assets/sprites/player.json');
 
@@ -54,15 +127,25 @@ function preload() {
   this.load.image('ground', 'assets/images/ground.svg');
   this.load.image('buildings', 'assets/images/buildings.svg');
   this.load.image('background', 'assets/images/background.svg');
+
+  // Add a small delay to show the loading progress
+  this.load.on('complete', function() {
+    console.log('All assets loaded successfully');
+  });
 }
 
 // Create game objects
 function create() {
+  console.log("Create function called");
+
   // Don't start the game if the start screen is active
   if (typeof gameStarted !== 'undefined' && !gameStarted) {
+    console.log("Game not started yet, pausing scene");
     this.scene.pause();
     return;
   }
+
+  console.log("Game started, initializing game objects");
 
   // Reset game variables
   score = 0;

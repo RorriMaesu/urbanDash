@@ -13,27 +13,35 @@ function initStartScreen() {
         <h3>Select Character</h3>
         <div class="character-options">
           <div class="character-option selected" data-character="default">
-            <div class="character-preview default"></div>
+            <div class="character-preview">
+              <img src="assets/images/player.svg" alt="Runner" class="character-img">
+            </div>
             <span>Runner</span>
           </div>
           <div class="character-option" data-character="hacker">
-            <div class="character-preview hacker"></div>
+            <div class="character-preview">
+              <img src="assets/images/player.svg" alt="Hacker" class="character-img hacker-filter">
+            </div>
             <span>Hacker</span>
           </div>
           <div class="character-option" data-character="punk">
-            <div class="character-preview punk"></div>
+            <div class="character-preview">
+              <img src="assets/images/player.svg" alt="Punk" class="character-img punk-filter">
+            </div>
             <span>Punk</span>
           </div>
         </div>
       </div>
       <button id="start-btn">START GAME</button>
       <div class="controls-info">
-        <p>Controls: Press SPACE or tap screen to jump</p>
+        <p>Controls: Press SPACE or UP ARROW to jump</p>
+        <p>Or tap/click the screen on mobile devices</p>
+        <a href="instructions.html" class="instructions-link">View Full Instructions</a>
       </div>
     </div>
   `;
 
-  document.body.insertBefore(startScreen, document.getElementById('game'));
+  document.body.insertBefore(startScreen, document.getElementById('game-container'));
 
   // Add event listeners
   document.querySelectorAll('.character-option').forEach(option => {
@@ -41,6 +49,7 @@ function initStartScreen() {
       document.querySelectorAll('.character-option').forEach(opt => opt.classList.remove('selected'));
       this.classList.add('selected');
       selectedCharacter = this.getAttribute('data-character');
+      console.log("Selected character: " + selectedCharacter);
     });
   });
 
@@ -52,6 +61,7 @@ function startGame() {
   gameStarted = true;
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('game').style.display = 'block';
+  document.getElementById('loading-message').style.display = 'none';
 
   // Track game start in analytics
   if (typeof analytics !== 'undefined') {
@@ -59,6 +69,8 @@ function startGame() {
       character: selectedCharacter
     });
   }
+
+  console.log("Starting game with character: " + selectedCharacter);
 
   // Initialize the game
   if (typeof game !== 'undefined') {
@@ -69,6 +81,8 @@ function startGame() {
       // Start the scene if it hasn't been started yet
       game.scene.start('GameScene');
     }
+  } else {
+    console.error("Game object is not defined!");
   }
 }
 
@@ -77,7 +91,7 @@ function addStartScreenStyles() {
   const style = document.createElement('style');
   style.textContent = `
     #start-screen {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -90,9 +104,9 @@ function addStartScreenStyles() {
     }
 
     .start-content {
-      width: 80%;
+      width: 90%;
       max-width: 500px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       padding: 30px;
       border-radius: 10px;
       text-align: center;
@@ -100,14 +114,14 @@ function addStartScreenStyles() {
     }
 
     #start-screen h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin-bottom: 20px;
       color: #3498db;
       text-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
     }
 
     #start-screen p {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       color: #ecf0f1;
     }
 
@@ -120,6 +134,7 @@ function addStartScreenStyles() {
       justify-content: center;
       gap: 20px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
 
     .character-option {
@@ -127,6 +142,7 @@ function addStartScreenStyles() {
       padding: 10px;
       border-radius: 5px;
       transition: all 0.3s;
+      width: 80px;
     }
 
     .character-option.selected {
@@ -135,22 +151,29 @@ function addStartScreenStyles() {
     }
 
     .character-preview {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       margin: 0 auto 10px;
       border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background-color: #222;
     }
 
-    .character-preview.default {
-      background-color: #3498db;
+    .character-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
-    .character-preview.hacker {
-      background-color: #2ecc71;
+    .hacker-filter {
+      filter: hue-rotate(120deg);
     }
 
-    .character-preview.punk {
-      background-color: #e74c3c;
+    .punk-filter {
+      filter: hue-rotate(300deg);
     }
 
     #start-btn {
@@ -174,6 +197,18 @@ function addStartScreenStyles() {
       margin-top: 20px;
       font-size: 0.9rem;
       color: #bdc3c7;
+    }
+
+    .instructions-link {
+      display: inline-block;
+      color: #3498db;
+      text-decoration: none;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .instructions-link:hover {
+      text-decoration: underline;
     }
   `;
 
