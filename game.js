@@ -1,6 +1,6 @@
 // Game configuration
 const config = {
-  type: Phaser.AUTO, // Try AUTO first, falls back to CANVAS if WebGL not available
+  type: Phaser.CANVAS, // Force CANVAS renderer to avoid WebGL warnings
   parent: 'game',
   width: 480,
   height: 640,
@@ -29,7 +29,13 @@ const config = {
   title: 'Urban Dash',
   version: '1.0',
   // Disable right-click context menu
-  disableContextMenu: true
+  disableContextMenu: true,
+  // Renderer options
+  render: {
+    antialias: false,
+    pixelArt: true,
+    roundPixels: true
+  }
 };
 
 // Game variables

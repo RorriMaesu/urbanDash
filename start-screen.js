@@ -41,7 +41,14 @@ function initStartScreen() {
     </div>
   `;
 
-  document.body.insertBefore(startScreen, document.getElementById('game-container'));
+  // Fix the insertBefore error by appending to body if game-container is not found
+  const gameContainer = document.getElementById('game-container');
+  if (gameContainer) {
+    document.body.insertBefore(startScreen, gameContainer);
+  } else {
+    console.log("Game container not found, appending to body");
+    document.body.appendChild(startScreen);
+  }
 
   // Add event listeners
   document.querySelectorAll('.character-option').forEach(option => {
@@ -215,11 +222,24 @@ function addStartScreenStyles() {
   document.head.appendChild(style);
 }
 
-// Initialize on window load
-window.addEventListener('load', function() {
-  addStartScreenStyles();
-  initStartScreen();
+// Initialize on DOM content loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("Initializing start screen");
 
-  // Hide game until start
-  document.getElementById('game').style.display = 'none';
+  // Add styles first
+  addStartScreenStyles();
+
+  // Short timeout to ensure DOM is fully ready
+  setTimeout(function() {
+    // Initialize start screen
+    initStartScreen();
+
+    // Hide game until start
+    const gameElement = document.getElementById('game');
+    if (gameElement) {
+      gameElement.style.display = 'none';
+    }
+
+    console.log("Start screen initialized");
+  }, 100);
 });
